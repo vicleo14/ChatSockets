@@ -15,36 +15,43 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 public class JMainWindow extends JFrame{
-	private JEditorPane jepChatG;
-	private JButton jbSend;
-	private JButton jbFiles;
-	private JList jlUsers;
-	private JTextField jtfMessage;
-	private JScrollPane jsMessages,jsUsers;
-	private JLabel jlbUsers;
-	private DefaultListModel model;
-	private JPanel jpCenter, jpEast,jpButtons,jpSouth;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	protected JEditorPane jepChatG;
+	protected JButton jbSend;
+	protected JButton jbFiles;
+	protected JList jlUsers;
+	protected JTextField jtfMessage;
+	protected JScrollPane jsMessages,jsUsers;
+	protected JLabel jlbUsers;
+	protected DefaultListModel model;
+	protected JPanel jpCenter, jpEast,jpButtons,jpSouth;
 	
 	
 	public JMainWindow()
 	{
 		super("Chat");
-		init();
 	}
-	public void init()
+	public void init(String user)
 	{
+		super.setTitle("Chat - " + user);
 		this.setLayout(new BorderLayout());
-		jepChatG=new JEditorPane();
+		setJepChatG(new JEditorPane());
 		jbSend=new JButton("Send");
 		jbFiles=new JButton("FIles");
 		jlUsers=new JList();
 		jtfMessage=new JTextField();
 		jsMessages=new JScrollPane();//Julio lo revisa
-		
+		jepChatG = new JEditorPane();
 		jsUsers=new JScrollPane();//Julio lo revisa
 		
-		jsUsers.add(jlUsers);
+		jsUsers.setViewportView(jlUsers);
 		model=new DefaultListModel<String>();
+		
+		jepChatG.setContentType("text/html");
+		jsMessages.setViewportView(jepChatG);
 		
 		jlbUsers=new JLabel("Users                                  ");
 		jpButtons=new JPanel(new GridLayout(1,2));
@@ -68,9 +75,12 @@ public class JMainWindow extends JFrame{
 		
 		this.setSize(700,400);
 		this.setVisible(true);
-		
-		
-		
-		
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);		
+	}
+	public JEditorPane getJepChatG() {
+		return jepChatG;
+	}
+	public void setJepChatG(JEditorPane jepChatG) {
+		this.jepChatG = jepChatG;
 	}
 }
