@@ -177,7 +177,7 @@ public class MulticastS {
 	
 	public void sendFile(File file) throws IOException {
 		long size=file.length();
-		sendString(file.getName());
+		sendString(file.getName()+";");
 		sendLong(size);
 				
 		String path=file.getAbsolutePath();
@@ -204,13 +204,13 @@ public class MulticastS {
 		Long size = receiveLong();
 		
 		String saveLocation;
-		String[] splt=name.split("\\.");
-		System.out.println(""+splt);
-		int tam=splt.length;
-		System.out.println(""+tam);
-		String ext="."+splt[tam-1].substring(0, 3);
-		System.out.println(ext);
-		System.out.println("Tamanio"+tam);
+		String[] splt1=name.split(";");
+		int tam=splt1.length;
+		String fn=splt1[0];
+		System.out.println(fn);
+		String[] splt=fn.split("\\.");
+		tam=splt.length;
+		String ext="."+splt[tam-1];
 		saveLocation=folder+"/"+newFileName+ext;
 		System.out.println(saveLocation);
 		DataOutputStream dos=new DataOutputStream(new FileOutputStream(saveLocation));
