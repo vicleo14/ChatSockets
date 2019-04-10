@@ -1,4 +1,4 @@
-package mx.ipn.escom.practica3.client;
+package mx.ipn.escom.chatsockets.client;
 
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -12,13 +12,13 @@ import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import mx.ipn.escom.practica3.client.ClientThread;
-import mx.ipn.escom.practica3.constants.TcpRequestName;
-import mx.ipn.escom.practica3.entity.Message;
-import mx.ipn.escom.practica3.entity.MessageBoard;
-import mx.ipn.escom.practica3.guis.JMainWindow;
-import mx.ipn.escom.practica3.sockets.MulticastS;
-import mx.ipn.escom.practica3.sockets.TcpClientSocket;
+import mx.ipn.escom.chatsockets.client.ClientThread;
+import mx.ipn.escom.chatsockets.constants.TcpRequestName;
+import mx.ipn.escom.chatsockets.entity.Message;
+import mx.ipn.escom.chatsockets.entity.MessageBoard;
+import mx.ipn.escom.chatsockets.guis.JMainWindow;
+import mx.ipn.escom.chatsockets.sockets.MulticastS;
+import mx.ipn.escom.chatsockets.sockets.TcpClientSocket;
 
 public class Client extends JMainWindow implements ActionListener,ListSelectionListener{
 	/**

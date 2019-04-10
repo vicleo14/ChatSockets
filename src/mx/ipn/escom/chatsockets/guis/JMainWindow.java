@@ -1,4 +1,4 @@
-package mx.ipn.escom.practica3.guis;
+package mx.ipn.escom.chatsockets.guis;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;

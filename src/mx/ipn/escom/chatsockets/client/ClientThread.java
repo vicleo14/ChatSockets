@@ -7,14 +7,14 @@
  * 
  */
 
-package mx.ipn.escom.practica3.client;
+package mx.ipn.escom.chatsockets.client;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import mx.ipn.escom.practica3.entity.Message;
-import mx.ipn.escom.practica3.sockets.MulticastS;
+import mx.ipn.escom.chatsockets.entity.Message;
+import mx.ipn.escom.chatsockets.sockets.MulticastS;
 
 public class ClientThread implements Runnable {
 	private MulticastS mtcs;
@@ -70,7 +70,7 @@ public class ClientThread implements Runnable {
 						
 						client.getJepChatG().setText(client.getMessageBoard().getMessages());
 					}
-					System.out.println("Llegó mensaje.");
+					System.out.println("Llegï¿½ mensaje.");
 				}
 			}
 

@@ -8,7 +8,7 @@
  */
 
 
-package mx.ipn.escom.practica3.sockets;
+package mx.ipn.escom.chatsockets.sockets;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -187,7 +187,7 @@ public class MulticastS {
 		int percent=0,n=0;
 		while(sent<size) {
 			n=dis.read(b);
-			System.out.println("Tamaño: "+n);
+			System.out.println("Tamaï¿½o: "+n);
 			DatagramPacket p=new DatagramPacket(b, n,group,port);
 			multicastSocket.send(p);
 			sent+=n;

@@ -1,4 +1,4 @@
-package mx.ipn.escom.practica3.entity;
+package mx.ipn.escom.chatsockets.entity;
 
 import java.io.Serializable;
 

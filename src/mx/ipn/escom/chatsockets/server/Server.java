@@ -1,13 +1,13 @@
-package mx.ipn.escom.practica3.server;
+package mx.ipn.escom.chatsockets.server;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import mx.ipn.escom.practica3.constants.TcpRequestName;
-import mx.ipn.escom.practica3.entity.Message;
-import mx.ipn.escom.practica3.sockets.MulticastS;
-import mx.ipn.escom.practica3.sockets.TcpServerSocket;
+import mx.ipn.escom.chatsockets.constants.TcpRequestName;
+import mx.ipn.escom.chatsockets.entity.Message;
+import mx.ipn.escom.chatsockets.sockets.MulticastS;
+import mx.ipn.escom.chatsockets.sockets.TcpServerSocket;
 
 public class Server {
 	private TcpServerSocket tcpss;
@@ -86,7 +86,7 @@ public class Server {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println("Servidor en ejecución...");
+		System.out.println("Servidor en ejecuciï¿½n...");
 		@SuppressWarnings("unused")
 		Server server=new Server();
 	}

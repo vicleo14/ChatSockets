@@ -6,7 +6,7 @@
  * Description:
  * 
  */
-package mx.ipn.escom.practica3.constants;
+package mx.ipn.escom.chatsockets.constants;
 
 public class TcpRequestName {
 	public static final Integer GROUP_MESSAGE=1;
