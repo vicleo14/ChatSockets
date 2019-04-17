@@ -6,6 +6,7 @@ import java.util.Date;
 
 import mx.ipn.escom.chatsockets.constants.TcpRequestName;
 import mx.ipn.escom.chatsockets.entity.Message;
+import mx.ipn.escom.chatsockets.entity.User;
 import mx.ipn.escom.chatsockets.sockets.MulticastS;
 import mx.ipn.escom.chatsockets.sockets.TcpServerSocket;
 
@@ -16,11 +17,15 @@ public class Server {
 	private String path = "temporal/";
 	private SimpleDateFormat sdf=new SimpleDateFormat("yyMMdd");
 	private SimpleDateFormat sdf2=new SimpleDateFormat("yyMMddHHmmss");
+	
 
 	public Server() {
 		tcpss=new  TcpServerSocket();
 		mss=new MulticastS("228.1.1.1",9999,true, 128);
+		System.out.println("Comienza a recibir");
 		beginListening();
+		
+		
 	}
 	
 	public void beginListening()
@@ -31,6 +36,7 @@ public class Server {
 			{
 				tcpss.getPetition();
 				Object receivedObject=tcpss.readObject();
+				System.out.println("Object:"+receivedObject.getClass());
 				if(receivedObject instanceof Integer)
 				{
 					Integer opc=(Integer)receivedObject;
@@ -62,6 +68,12 @@ public class Server {
 					{
 						System.out.println("Valor obtenido:"+opc);
 					}
+				}
+				else if(receivedObject instanceof User)
+				{
+					User u=(User)receivedObject;
+					System.out.println("New user:"+u.getNickName());
+					mss.sendObject(u);
 				}
 				else
 				{

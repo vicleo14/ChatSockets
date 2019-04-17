@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import mx.ipn.escom.chatsockets.entity.Message;
+import mx.ipn.escom.chatsockets.entity.User;
 import mx.ipn.escom.chatsockets.sockets.MulticastS;
 
 public class ClientThread implements Runnable {
@@ -71,6 +72,13 @@ public class ClientThread implements Runnable {
 						client.getJepChatG().setText(client.getMessageBoard().getMessages());
 					}
 					System.out.println("Lleg� mensaje.");
+				}
+				else if(obj instanceof User)
+				{
+					System.out.println("Recibe usuario");
+					User u=(User)obj;
+					client.getMessageBoard().append("<b>New user connected: </b>"+u.getNickName()+" <br />");//Revisar clase
+					client.getJepChatG().setText(client.getMessageBoard().getMessages());
 				}
 			}
 

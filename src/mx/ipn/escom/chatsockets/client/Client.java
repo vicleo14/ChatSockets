@@ -16,6 +16,7 @@ import mx.ipn.escom.chatsockets.client.ClientThread;
 import mx.ipn.escom.chatsockets.constants.TcpRequestName;
 import mx.ipn.escom.chatsockets.entity.Message;
 import mx.ipn.escom.chatsockets.entity.MessageBoard;
+import mx.ipn.escom.chatsockets.entity.User;
 import mx.ipn.escom.chatsockets.guis.JMainWindow;
 import mx.ipn.escom.chatsockets.sockets.MulticastS;
 import mx.ipn.escom.chatsockets.sockets.TcpClientSocket;
@@ -32,6 +33,7 @@ public class Client extends JMainWindow implements ActionListener,ListSelectionL
 	private String user;
 	private boolean imageType = false, fileExists = false;
 	private File messageFile = null;
+	private User u;
 	
 	public Client()
 	{
@@ -41,8 +43,12 @@ public class Client extends JMainWindow implements ActionListener,ListSelectionL
 		loadBoard();
 		setListeners();
 		msc=new MulticastS("228.1.1.1",9999,true);
+		u=new User();
+		u.setNickName(user);
+		
 		ct=new ClientThread(msc,this);
 		new Thread(ct).start();
+		sendUser(u);
 	}
 	
 	public void user() {
@@ -106,7 +112,20 @@ public class Client extends JMainWindow implements ActionListener,ListSelectionL
 		    System.out.println("The file could not be opened , an error occurred.");
 		}
 	}
-	
+	public void sendUser(User u)
+	{
+		try
+		{
+			TcpClientSocket tcpcs=new TcpClientSocket("127.0.0.1",1234);
+			tcpcs.sendObject(u);
+			
+			tcpcs.closeConection();
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error al eniar comentario:"+ex.toString());
+		}
+	}
 	public void sendMessage()
 	{	
 		try
@@ -118,7 +137,6 @@ public class Client extends JMainWindow implements ActionListener,ListSelectionL
 			if(fileExists){
 				tcpcs.sendFile(messageFile);
 			}
-			
 			tcpcs.closeConection();
 		}
 		catch(Exception ex)
