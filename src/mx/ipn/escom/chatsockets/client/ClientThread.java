@@ -65,7 +65,7 @@ public class ClientThread implements Runnable {
 							createDirectory(folder);
 							String fileName=m.getSender()+sdf2.format(new Date());
 														
-							String file = mtcs.readFile(folder,fileName);
+							mtcs.receiveFile(folder+fileName);
 							System.out.println("File name:"+file);
 						}
 						
