@@ -14,6 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import mx.ipn.escom.util.UsersModel;
+
 public class JMainWindow extends JFrame{
 	/**
 	 * 
@@ -30,9 +32,11 @@ public class JMainWindow extends JFrame{
 	protected JPanel jpCenter, jpEast,jpButtons,jpSouth;
 	
 	
+	
 	public JMainWindow()
 	{
 		super("Chat");
+		
 	}
 	public void init(String user)
 	{
@@ -43,9 +47,9 @@ public class JMainWindow extends JFrame{
 		jbFiles=new JButton("FIles");
 		jlUsers=new JList();
 		jtfMessage=new JTextField();
-		jsMessages=new JScrollPane();//Julio lo revisa
+		jsMessages=new JScrollPane();
 		jepChatG = new JEditorPane();
-		jsUsers=new JScrollPane();//Julio lo revisa
+		jsUsers=new JScrollPane();
 		
 		jsUsers.setViewportView(jlUsers);
 		model=new DefaultListModel<String>();

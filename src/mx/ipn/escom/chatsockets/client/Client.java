@@ -12,28 +12,32 @@ import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import mx.ipn.escom.chatsockets.client.ClientThread;
 import mx.ipn.escom.chatsockets.constants.TcpRequestName;
 import mx.ipn.escom.chatsockets.entity.Message;
 import mx.ipn.escom.chatsockets.entity.MessageBoard;
 import mx.ipn.escom.chatsockets.entity.User;
 import mx.ipn.escom.chatsockets.guis.JMainWindow;
+import mx.ipn.escom.chatsockets.sockets.GenericSocket;
 import mx.ipn.escom.chatsockets.sockets.MulticastS;
+import mx.ipn.escom.chatsockets.sockets.ReceiverSocket;
 import mx.ipn.escom.chatsockets.sockets.TcpClientSocket;
+import mx.ipn.escom.util.UsersModel;
 
 public class Client extends JMainWindow implements ActionListener,ListSelectionListener{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private MulticastS msc;
-	private Runnable ct;
+	private GenericSocket msc;
+	private Runnable receiverSocket;
 	private MessageBoard messageBoard;
 	private Message message;
 	private String user;
 	private boolean imageType = false, fileExists = false;
 	private File messageFile = null;
 	private User u;
+	/********************************************/
+	private UsersModel usersModel;
 	
 	public Client()
 	{
@@ -42,13 +46,14 @@ public class Client extends JMainWindow implements ActionListener,ListSelectionL
 		init(user);
 		loadBoard();
 		setListeners();
-		msc=new MulticastS("228.1.1.1",9999,true);
+		msc=new MulticastS("228.1.1.2",9999,true);
 		u=new User();
 		u.setNickName(user);
-		
-		ct=new ClientThread(msc,this);
-		new Thread(ct).start();
+		receiverSocket=new ReceiverSocket(this);
+		new Thread(receiverSocket).start();
 		sendUser(u);
+		usersModel=new UsersModel();
+		this.jlUsers.setModel(usersModel);
 	}
 	
 	public void user() {
@@ -77,6 +82,7 @@ public class Client extends JMainWindow implements ActionListener,ListSelectionL
 
 	public void actionPerformed(ActionEvent ae) {
 		if(ae.getSource().equals(jbSend)) {
+			
 			System.out.println("'Send' Button.");
 			message = new Message(user,jtfMessage.getText()+"<br/>", fileExists, imageType);
 			sendMessage();
@@ -116,10 +122,7 @@ public class Client extends JMainWindow implements ActionListener,ListSelectionL
 	{
 		try
 		{
-			TcpClientSocket tcpcs=new TcpClientSocket("127.0.0.1",1234);
-			tcpcs.sendObject(u);
-			
-			tcpcs.closeConection();
+			msc.sendObject(u);
 		}
 		catch(Exception ex)
 		{
@@ -130,20 +133,21 @@ public class Client extends JMainWindow implements ActionListener,ListSelectionL
 	{	
 		try
 		{
-			TcpClientSocket tcpcs=new TcpClientSocket("127.0.0.1",1234);
-			tcpcs.sendObject(TcpRequestName.GROUP_MESSAGE);
-			tcpcs.sendObject(message);
+			msc.sendObject(TcpRequestName.GROUP_MESSAGE);
+			msc.sendObject(message);
 			
 			if(fileExists){
-				tcpcs.sendFile(messageFile);
+				msc.sendFile(messageFile);
 			}
-			tcpcs.closeConection();
 		}
 		catch(Exception ex)
 		{
 			System.out.println("Error al eniar comentario:"+ex.toString());
 		}
 	}
+	
+	
+	/****************************GETTERS Y SETTERS******************************/
 
 	public MessageBoard getMessageBoard() {
 		return messageBoard;
@@ -157,4 +161,12 @@ public class Client extends JMainWindow implements ActionListener,ListSelectionL
 		return user;
 	}
 
+	public UsersModel getUsersModel() {
+		return usersModel;
+	}
+
+	public void setUsersModel(UsersModel usersModel) {
+		this.usersModel = usersModel;
+	}
+	
 }

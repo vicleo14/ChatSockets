@@ -116,6 +116,7 @@ public class MulticastS implements GenericSocket {
 	{
 		try 
 		{
+			System.out.println("ENTRA A SENDOBJECT EN MULTICASTS");
 			ByteArrayOutputStream baos=new ByteArrayOutputStream();
 			ObjectOutputStream oos;
 			oos = new ObjectOutputStream(baos);
@@ -146,7 +147,7 @@ public class MulticastS implements GenericSocket {
 		}
 		catch(IOException iex)
 		{
-			
+			iex.printStackTrace();
 		}
 		return obj;
 	}
