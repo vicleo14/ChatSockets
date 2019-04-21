@@ -89,6 +89,7 @@ public class ReceiverSocket extends MulticastS implements Runnable{
 				}
 				else if(obj instanceof Hashtable)
 				{
+					//client.getJlUsers().clearSelection();
 					System.out.println("Llega hashtable");
 					Hashtable ht=(Hashtable)obj;
 					UsersModel um=new UsersModel();

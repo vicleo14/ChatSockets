@@ -75,6 +75,7 @@ public class Client extends JMainWindow implements ActionListener,ListSelectionL
 	private void setListeners() {
 		jbSend.addActionListener(this);
 		jbFiles.addActionListener(this);
+		jlUsers.addListSelectionListener(this);
 	}
 
 	public static void main(String[] args)
@@ -84,6 +85,14 @@ public class Client extends JMainWindow implements ActionListener,ListSelectionL
 	}
 
 	public void valueChanged(ListSelectionEvent lse) {
+		try
+		{
+			int index=jlUsers.getSelectedIndex();
+			//jlUsers.clearSelection();
+			UsersModel um=(UsersModel)jlUsers.getModel();
+			User u=um.getUserByIndex(index);
+			System.out.println("Selecciono:"+u.getNickName());
+		}catch(Exception ex) {}
 		
 	}
 
