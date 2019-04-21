@@ -87,4 +87,80 @@ public class JMainWindow extends JFrame{
 	public void setJepChatG(JEditorPane jepChatG) {
 		this.jepChatG = jepChatG;
 	}
+	public JButton getJbSend() {
+		return jbSend;
+	}
+	public void setJbSend(JButton jbSend) {
+		this.jbSend = jbSend;
+	}
+	public JButton getJbFiles() {
+		return jbFiles;
+	}
+	public void setJbFiles(JButton jbFiles) {
+		this.jbFiles = jbFiles;
+	}
+	public JList getJlUsers() {
+		return jlUsers;
+	}
+	public void setJlUsers(JList jlUsers) {
+		this.jlUsers = jlUsers;
+	}
+	public JTextField getJtfMessage() {
+		return jtfMessage;
+	}
+	public void setJtfMessage(JTextField jtfMessage) {
+		this.jtfMessage = jtfMessage;
+	}
+	public JScrollPane getJsMessages() {
+		return jsMessages;
+	}
+	public void setJsMessages(JScrollPane jsMessages) {
+		this.jsMessages = jsMessages;
+	}
+	public JScrollPane getJsUsers() {
+		return jsUsers;
+	}
+	public void setJsUsers(JScrollPane jsUsers) {
+		this.jsUsers = jsUsers;
+	}
+	public JLabel getJlbUsers() {
+		return jlbUsers;
+	}
+	public void setJlbUsers(JLabel jlbUsers) {
+		this.jlbUsers = jlbUsers;
+	}
+	public DefaultListModel getModel() {
+		return model;
+	}
+	public void setModel(DefaultListModel model) {
+		this.model = model;
+	}
+	public JPanel getJpCenter() {
+		return jpCenter;
+	}
+	public void setJpCenter(JPanel jpCenter) {
+		this.jpCenter = jpCenter;
+	}
+	public JPanel getJpEast() {
+		return jpEast;
+	}
+	public void setJpEast(JPanel jpEast) {
+		this.jpEast = jpEast;
+	}
+	public JPanel getJpButtons() {
+		return jpButtons;
+	}
+	public void setJpButtons(JPanel jpButtons) {
+		this.jpButtons = jpButtons;
+	}
+	public JPanel getJpSouth() {
+		return jpSouth;
+	}
+	public void setJpSouth(JPanel jpSouth) {
+		this.jpSouth = jpSouth;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	
 }

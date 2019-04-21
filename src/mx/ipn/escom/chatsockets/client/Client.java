@@ -1,10 +1,13 @@
 package mx.ipn.escom.chatsockets.client;
 
 import java.awt.Image;
+import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
+import java.util.Hashtable;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
@@ -36,13 +39,17 @@ public class Client extends JMainWindow implements ActionListener,ListSelectionL
 	private boolean imageType = false, fileExists = false;
 	private File messageFile = null;
 	private User u;
-	/********************************************/
+	/*******************MODELO DE LA LISTA DE USUARIOS*************************/
 	private UsersModel usersModel;
-	
+	/********************************************/
+	private Hashtable<User,MessageBoard> privateMessages;
 	public Client()
 	{
 		super();
 		user();
+		//Preparacion de mensajes privados
+		privateMessages=new Hashtable<User,MessageBoard>();
+		/***************************/
 		init(user);
 		loadBoard();
 		setListeners();
@@ -83,7 +90,7 @@ public class Client extends JMainWindow implements ActionListener,ListSelectionL
 	public void actionPerformed(ActionEvent ae) {
 		if(ae.getSource().equals(jbSend)) {
 			
-			System.out.println("'Send' Button.");
+			//System.out.println("'Send' Button.");
 			message = new Message(user,jtfMessage.getText()+"<br/>", fileExists, imageType);
 			sendMessage();
 			jtfMessage.setText("");
@@ -167,6 +174,64 @@ public class Client extends JMainWindow implements ActionListener,ListSelectionL
 
 	public void setUsersModel(UsersModel usersModel) {
 		this.usersModel = usersModel;
+	}
+
+	public GenericSocket getMsc() {
+		return msc;
+	}
+
+	public void setMsc(GenericSocket msc) {
+		this.msc = msc;
+	}
+
+	public Runnable getReceiverSocket() {
+		return receiverSocket;
+	}
+
+	public void setReceiverSocket(Runnable receiverSocket) {
+		this.receiverSocket = receiverSocket;
+	}
+	public Message getMessage() {
+		return message;
+	}
+	public void setMessage(Message message) {
+		this.message = message;
+	}
+	public boolean isImageType() {
+		return imageType;
+	}
+	public void setImageType(boolean imageType) {
+		this.imageType = imageType;
+	}
+	public boolean isFileExists() {
+		return fileExists;
+	}
+	public void setFileExists(boolean fileExists) {
+		this.fileExists = fileExists;
+	}
+	public File getMessageFile() {
+		return messageFile;
+	}
+	public void setMessageFile(File messageFile) {
+		this.messageFile = messageFile;
+	}
+	public User getU() {
+		return u;
+	}
+	public void setU(User u) {
+		this.u = u;
+	}
+	public Hashtable<User, MessageBoard> getPrivateMessages() {
+		return privateMessages;
+	}
+	public void setPrivateMessages(Hashtable<User, MessageBoard> privateMessages) {
+		this.privateMessages = privateMessages;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	public void setUser(String user) {
+		this.user = user;
 	}
 	
 }

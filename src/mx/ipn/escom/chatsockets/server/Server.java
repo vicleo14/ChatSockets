@@ -3,13 +3,13 @@ package mx.ipn.escom.chatsockets.server;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Hashtable;
 
 import mx.ipn.escom.chatsockets.constants.TcpRequestName;
 import mx.ipn.escom.chatsockets.entity.Message;
 import mx.ipn.escom.chatsockets.entity.User;
 import mx.ipn.escom.chatsockets.sockets.GenericSocket;
 import mx.ipn.escom.chatsockets.sockets.MulticastS;
-import mx.ipn.escom.chatsockets.sockets.TcpServerSocket;
 
 public class Server {
 	private GenericSocket mcrs;
@@ -19,10 +19,12 @@ public class Server {
 	private String path = "temporal/";
 	private SimpleDateFormat sdf=new SimpleDateFormat("yyMMdd");
 	private SimpleDateFormat sdf2=new SimpleDateFormat("yyMMddHHmmss");
-	
+	private Hashtable<User,Date> users;
 
 	public Server() 
 	{
+		//Preparacion del hash para almacenar usuarios
+		users=new Hashtable<User,Date>();
 		//Para recibir
 		mcrs=new  MulticastS("228.1.1.2",9999,true, 128);
 		//Para enviar
@@ -32,7 +34,6 @@ public class Server {
 		
 		
 	}
-	
 	public void beginListening()
 	{
 		try
@@ -75,7 +76,8 @@ public class Server {
 				{
 					User u=(User)receivedObject;
 					System.out.println("New user:"+u.getNickName());
-					mss.sendObject(u);
+					users.put(u,new Date());
+					mss.sendObject(users);
 				}
 				else
 				{

@@ -3,10 +3,14 @@ package mx.ipn.escom.chatsockets.sockets;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Enumeration;
+import java.util.Hashtable;
 
 import mx.ipn.escom.chatsockets.client.Client;
 import mx.ipn.escom.chatsockets.entity.Message;
+import mx.ipn.escom.chatsockets.entity.MessageBoard;
 import mx.ipn.escom.chatsockets.entity.User;
+import mx.ipn.escom.util.UsersModel;
 
 public class ReceiverSocket extends MulticastS implements Runnable{
 	private Client client;
@@ -82,6 +86,30 @@ public class ReceiverSocket extends MulticastS implements Runnable{
 					client.getUsersModel().addUser(u);
 					
 					client.getJepChatG().setText(client.getMessageBoard().getMessages());
+				}
+				else if(obj instanceof Hashtable)
+				{
+					System.out.println("Llega hashtable");
+					Hashtable ht=(Hashtable)obj;
+					UsersModel um=new UsersModel();
+					Enumeration en=ht.keys();
+					while(en.hasMoreElements())
+					{
+						User u=(User)en.nextElement();
+						um.addUser(u);
+						if(client.getPrivateMessages().containsKey(u))
+						{
+							System.out.println("Contiene a:"+u.getNickName());
+						}
+						else
+						{
+							System.out.println("No contiene a:"+u.getNickName());
+							MessageBoard mb=new MessageBoard();
+							client.getPrivateMessages().put(u,mb);
+						}
+					}
+					client.getJlUsers().setModel(um);
+					
 				}
 			}
 

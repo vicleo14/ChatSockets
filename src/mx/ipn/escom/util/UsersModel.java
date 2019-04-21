@@ -6,7 +6,11 @@ import javax.swing.AbstractListModel;
 
 import mx.ipn.escom.chatsockets.entity.User;
 
-public class UsersModel extends AbstractListModel {
+public class UsersModel extends AbstractListModel<Object> {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ArrayList<User> usersList = new ArrayList<User>();
 	@Override
     public int getSize() {
