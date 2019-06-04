@@ -7,7 +7,7 @@
  * 
  */
 
-package mx.ipn.escom.practica3.sockets;
+package mx.ipn.escom.chatsockets.sockets;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
