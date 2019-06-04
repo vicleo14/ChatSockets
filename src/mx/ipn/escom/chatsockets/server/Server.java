@@ -3,40 +3,52 @@ package mx.ipn.escom.chatsockets.server;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Hashtable;
 
 import mx.ipn.escom.chatsockets.constants.TcpRequestName;
 import mx.ipn.escom.chatsockets.entity.Message;
+import mx.ipn.escom.chatsockets.entity.User;
+import mx.ipn.escom.chatsockets.sockets.GenericSocket;
 import mx.ipn.escom.chatsockets.sockets.MulticastS;
-import mx.ipn.escom.chatsockets.sockets.TcpServerSocket;
 
 public class Server {
-	private TcpServerSocket tcpss;
+	private GenericSocket mcrs;
+	
 	private MulticastS mss;
 	private Message message;
 	private String path = "temporal/";
 	private SimpleDateFormat sdf=new SimpleDateFormat("yyMMdd");
 	private SimpleDateFormat sdf2=new SimpleDateFormat("yyMMddHHmmss");
+	private Hashtable<User,Date> users;
 
-	public Server() {
-		tcpss=new  TcpServerSocket();
+	public Server() 
+	{
+		//Preparacion del hash para almacenar usuarios
+		users=new Hashtable<User,Date>();
+		//Para recibir
+		mcrs=new  MulticastS("228.1.1.2",9999,true, 128);
+		//Para enviar
 		mss=new MulticastS("228.1.1.1",9999,true, 128);
+		System.out.println("Comienza a recibir");
 		beginListening();
+		
+		
 	}
-	
 	public void beginListening()
 	{
 		try
 		{
 			for(;;)
 			{
-				tcpss.getPetition();
-				Object receivedObject=tcpss.readObject();
+				Object receivedObject=mcrs.receiveObject();
+				System.out.println("Recibe nuevo objeto");
+				System.out.println("Object:"+receivedObject.getClass());
 				if(receivedObject instanceof Integer)
 				{
 					Integer opc=(Integer)receivedObject;
 					if (opc.equals(TcpRequestName.GROUP_MESSAGE)) 
 					{
-						message = (Message)tcpss.readObject();
+						message = (Message)mcrs.receiveObject();
 						
 						mss.sendObject(message);
 												
@@ -44,11 +56,8 @@ public class Server {
 							String folder = "temporal" + sdf.format(new Date());
 							createDirectory(folder);
 							String imageName = message.getSender()+sdf2.format(new Date());
-							String filename = tcpss.readFile(folder,imageName);
-							System.out.println("File name:"+filename);
-							File fts = new File(filename);
 							
-							mss.sendFile(fts);
+							//mss.sendFile(fts);
 							/*File file = new File(folder);
 							file.delete();*/
 						}
@@ -62,6 +71,13 @@ public class Server {
 					{
 						System.out.println("Valor obtenido:"+opc);
 					}
+				}
+				else if(receivedObject instanceof User)
+				{
+					User u=(User)receivedObject;
+					System.out.println("New user:"+u.getNickName());
+					users.put(u,new Date());
+					mss.sendObject(users);
 				}
 				else
 				{
