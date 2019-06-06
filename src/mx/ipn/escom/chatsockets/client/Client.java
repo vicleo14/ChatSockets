@@ -20,6 +20,7 @@ import mx.ipn.escom.chatsockets.entity.Message;
 import mx.ipn.escom.chatsockets.entity.MessageBoard;
 import mx.ipn.escom.chatsockets.entity.User;
 import mx.ipn.escom.chatsockets.guis.JMainWindow;
+import mx.ipn.escom.chatsockets.guis.JPrivateMessage;
 import mx.ipn.escom.chatsockets.sockets.GenericSocket;
 import mx.ipn.escom.chatsockets.sockets.MulticastS;
 import mx.ipn.escom.chatsockets.sockets.ReceiverSocket;
@@ -42,13 +43,15 @@ public class Client extends JMainWindow implements ActionListener,ListSelectionL
 	/*******************MODELO DE LA LISTA DE USUARIOS*************************/
 	private UsersModel usersModel;
 	/********************************************/
-	private Hashtable<User,MessageBoard> privateMessages;
+	private Hashtable<String,MessageBoard> privateMessages;
+	private Hashtable<String,JPrivateMessage> privateWindows;
 	public Client()
 	{
 		super();
 		user();
 		//Preparacion de mensajes privados
-		privateMessages=new Hashtable<User,MessageBoard>();
+		privateMessages=new Hashtable<String,MessageBoard>();
+		privateWindows=new Hashtable<String,JPrivateMessage>();
 		/***************************/
 		init(user);
 		loadBoard();
@@ -91,15 +94,25 @@ public class Client extends JMainWindow implements ActionListener,ListSelectionL
 			//jlUsers.clearSelection();
 			UsersModel um=(UsersModel)jlUsers.getModel();
 			User u=um.getUserByIndex(index);
-			System.out.println("Selecciono:"+u.getNickName());
-		}catch(Exception ex) {}
+			/***--------------------AQUI CAMBIAR--------------------------------------***/
+			System.out.println("Keys:"+privateWindows.keys());
+			if(!privateWindows.containsKey(u.getNickName()))
+			{
+				privateWindows.put(u.getNickName(),new JPrivateMessage(u,privateMessages.get(u.getNickName()),this));
+			}
+			else
+			{
+				privateWindows.get(u.getNickName()).setVisible(true);
+			}
+		}catch(Exception ex) 
+		{
+			System.out.println(ex.toString());
+		}
 		
 	}
 
 	public void actionPerformed(ActionEvent ae) {
 		if(ae.getSource().equals(jbSend)) {
-			
-			//System.out.println("'Send' Button.");
 			message = new Message(user,jtfMessage.getText()+"<br/>", fileExists, imageType);
 			sendMessage();
 			jtfMessage.setText("");
@@ -230,10 +243,10 @@ public class Client extends JMainWindow implements ActionListener,ListSelectionL
 	public void setU(User u) {
 		this.u = u;
 	}
-	public Hashtable<User, MessageBoard> getPrivateMessages() {
+	public Hashtable<String, MessageBoard> getPrivateMessages() {
 		return privateMessages;
 	}
-	public void setPrivateMessages(Hashtable<User, MessageBoard> privateMessages) {
+	public void setPrivateMessages(Hashtable<String, MessageBoard> privateMessages) {
 		this.privateMessages = privateMessages;
 	}
 	public static long getSerialversionuid() {
@@ -242,5 +255,14 @@ public class Client extends JMainWindow implements ActionListener,ListSelectionL
 	public void setUser(String user) {
 		this.user = user;
 	}
+
+	public Hashtable<String, JPrivateMessage> getPrivateWindows() {
+		return privateWindows;
+	}
+
+	public void setPrivateWindows(Hashtable<String, JPrivateMessage> privateWindows) {
+		this.privateWindows = privateWindows;
+	}
+	
 	
 }

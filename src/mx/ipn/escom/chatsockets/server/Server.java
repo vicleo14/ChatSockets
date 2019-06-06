@@ -49,7 +49,7 @@ public class Server {
 					if (opc.equals(TcpRequestName.GROUP_MESSAGE)) 
 					{
 						message = (Message)mcrs.receiveObject();
-						
+						message.setReceiver("PUBLIC");
 						mss.sendObject(message);
 												
 						if(message.getFile()) {
@@ -65,7 +65,19 @@ public class Server {
 					}
 					else if(opc.equals(TcpRequestName.PRIVATE_MESSAGE))
 					{
-						
+						System.out.println("Llega mensaje privado");
+						message = (Message)mcrs.receiveObject();
+						mss.sendObject(message);
+												
+						if(message.getFile()) {
+							String folder = "temporal" + sdf.format(new Date());
+							createDirectory(folder);
+							String imageName = message.getSender()+sdf2.format(new Date());
+							
+							//mss.sendFile(fts);
+							/*File file = new File(folder);
+							file.delete();*/
+						}
 					}
 					else
 					{

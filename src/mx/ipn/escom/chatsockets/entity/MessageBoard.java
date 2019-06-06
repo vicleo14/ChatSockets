@@ -29,4 +29,9 @@ public class MessageBoard implements Serializable{
 	public void append(String messages) {
 		this.messages += messages;
 	}
+	@Override
+	public String toString()
+	{
+		return messages;
+	}
 }

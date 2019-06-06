@@ -10,6 +10,7 @@ import mx.ipn.escom.chatsockets.client.Client;
 import mx.ipn.escom.chatsockets.entity.Message;
 import mx.ipn.escom.chatsockets.entity.MessageBoard;
 import mx.ipn.escom.chatsockets.entity.User;
+import mx.ipn.escom.chatsockets.guis.JPrivateMessage;
 import mx.ipn.escom.util.UsersModel;
 
 public class ReceiverSocket extends MulticastS implements Runnable{
@@ -52,31 +53,58 @@ public class ReceiverSocket extends MulticastS implements Runnable{
 				if(obj instanceof Message)
 				{
 					Message m=(Message)obj;
-					
-					if(m.getSender().equals("-SERVER-"))
+					if(m.getReceiver().compareTo(client.getUser())==0 )
+					{
+						System.out.println("Mensaje para este usuario");
+						MessageBoard mb=client.getPrivateMessages().get(m.getSender());
+						mb.append("<b>"+m.getSender()+": </b>"+m.getText());
+						client.getPrivateWindows().get(m.getSender()).getJepChatG().setText(mb.getMessages());
+					}
+					else if(m.getSender().equals("-SERVER-"))
 					{
 						client.getMessageBoard().append(m.getText());
 						client.getJepChatG().setText(client.getMessageBoard().getMessages());
 					}
-					else
+					else 
 					{
-						client.getMessageBoard().append("<b>"+m.getSender()+": </b>"+m.getText());
-						
-						if(m.getFile())
-						{							
-							String folder=m.getSender()+"_files/";
-							createDirectory(folder);
-							folder+="imgs"+sdf.format(new Date());
-							createDirectory(folder);
-							String fileName=m.getSender()+sdf2.format(new Date());
-														
-							this.receiveFile(folder+fileName);
-							System.out.println("File name:");
+						if(m.getReceiver().compareTo("PUBLIC")==0)
+						{
+							client.getMessageBoard().append("<b>"+m.getSender()+": </b>"+m.getText());
+							if(m.getFile())
+							{							
+								String folder=m.getSender()+"_files/";
+								createDirectory(folder);
+								folder+="imgs"+sdf.format(new Date());
+								createDirectory(folder);
+								String fileName=m.getSender()+sdf2.format(new Date());
+															
+								this.receiveFile(folder+fileName);
+								System.out.println("File name:");
+							}
+							client.getJepChatG().setText(client.getMessageBoard().getMessages());
+						}
+						else if(m.getSender().compareTo(client.getUser())==0)
+						{
+							MessageBoard mb=client.getPrivateMessages().get(m.getReceiver());
+							mb.append("<b>"+m.getSender()+": </b>"+m.getText());
+							if(m.getFile())
+							{							
+								String folder=m.getSender()+"_files/";
+								createDirectory(folder);
+								folder+="imgs"+sdf.format(new Date());
+								createDirectory(folder);
+								String fileName=m.getSender()+sdf2.format(new Date());
+															
+								this.receiveFile(folder+fileName);
+								System.out.println("File name:");
+							}
+							client.getPrivateWindows().get(m.getReceiver()).getJepChatG().setText(mb.getMessages());
+							client.getJepChatG().setText(client.getMessageBoard().getMessages());
 						}
 						
-						client.getJepChatG().setText(client.getMessageBoard().getMessages());
+						
+						
 					}
-					//System.out.println("Llega mensaje.");
 				}
 				else if(obj instanceof User)
 				{
@@ -98,15 +126,16 @@ public class ReceiverSocket extends MulticastS implements Runnable{
 					{
 						User u=(User)en.nextElement();
 						um.addUser(u);
-						if(client.getPrivateMessages().containsKey(u))
+						if(client.getPrivateMessages().containsKey(u.getNickName()))
 						{
 							System.out.println("Contiene a:"+u.getNickName());
 						}
 						else
 						{
 							System.out.println("No contiene a:"+u.getNickName());
-							MessageBoard mb=new MessageBoard();
-							client.getPrivateMessages().put(u,mb);
+							MessageBoard mb = new MessageBoard("<h1>Private chat with "+u.getNickName()+".</h1>");
+							client.getPrivateMessages().put(u.getNickName(),mb);
+							client.getPrivateWindows().put(u.getNickName(),new JPrivateMessage(u,mb,client));
 						}
 					}
 					client.getJlUsers().setModel(um);
