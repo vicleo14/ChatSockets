@@ -116,7 +116,7 @@ public class MulticastS implements GenericSocket {
 	{
 		try 
 		{
-			System.out.println("ENTRA A SENDOBJECT EN MULTICASTS");
+			//System.out.println("ENTRA A SENDOBJECT EN MULTICASTS");
 			ByteArrayOutputStream baos=new ByteArrayOutputStream();
 			ObjectOutputStream oos;
 			oos = new ObjectOutputStream(baos);
@@ -163,7 +163,7 @@ public class MulticastS implements GenericSocket {
 				DataInputStream dis=new DataInputStream(new FileInputStream(file.getAbsolutePath()));
 				String name=file.getName()+";";
 				long sizeFile=file.length();
-				System.out.println("Tamanio de archivo en sendFile(MulticastS)::"+file.length());
+				//System.out.println("Tamanio de archivo en sendFile(MulticastS)::"+file.length());
 				long  read=0,n=0;
 				int i=0;
 				int total=(int)sizeFile/sizeData;
@@ -173,9 +173,9 @@ public class MulticastS implements GenericSocket {
 				{
 					byte[] b=new byte[sizeData];
 					n=dis.read(b);
-					System.out.println("Tamanio de b en MulticastS:sendFile::"+n);
+					//System.out.println("Tamanio de b en MulticastS:sendFile::"+n);
 					FileTransporter d=new FileTransporter(b,i,total,name,(int)n);
-					System.out.println("Tamanio de b en MulticastS:FileTransport::"+d.getBytes().length);
+					//System.out.println("Tamanio de b en MulticastS:FileTransport::"+d.getBytes().length);
 					ByteArrayOutputStream baos=new ByteArrayOutputStream();
 					ObjectOutputStream oos=new ObjectOutputStream(baos);
 					oos.writeObject(d);
@@ -233,7 +233,7 @@ public class MulticastS implements GenericSocket {
 					name=cads[0];
 				}
 				
-				System.out.println("Paquete "+d.getN()+" de "+d.getT());
+				//System.out.println("Paquete "+d.getN()+" de "+d.getT());
 				//Guarda el paquete si no lo había recibido
 				//if(filePieces[d.getN()]==null)
 				//{
@@ -259,7 +259,7 @@ public class MulticastS implements GenericSocket {
 					//Si no faltal espacios rompe el ciclo infinito.
 					if(isComplete)
 					{
-						System.out.println("Recibio todos. Generando archivo");
+						//System.out.println("Recibio todos. Generando archivo");
 						break;
 					}						
 				}
@@ -270,7 +270,7 @@ public class MulticastS implements GenericSocket {
 			
 			for(int k=0;k<filePieces.length;k++) 
 			{
-				System.out.println("Aqui si llega con i="+k);
+				//System.out.println("Aqui si llega con i="+k);
 				//System.out.println("Tamainio archivo:"+filePieces[k].getBytes().length);
 				outputStream.write(filePieces[k].getBytes(),0,filePieces[k].getSize());
 			}
@@ -297,10 +297,10 @@ public class MulticastS implements GenericSocket {
 	{
 		try
 		{
-			System.out.print(b.length);
+			//System.out.print(b.length);
 			DatagramPacket p=new DatagramPacket(b,b.length,group,port);
 			multicastSocket.send(p);
-			System.out.println("Se envio");
+			//System.out.println("Se envio");
 			p=null;
 			System.gc();
 		}

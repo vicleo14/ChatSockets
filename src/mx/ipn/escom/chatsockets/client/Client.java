@@ -128,7 +128,8 @@ public class Client extends JMainWindow implements ActionListener,ListSelectionL
 			{
 				fileExists = true;
 				messageFile=jfc.getSelectedFile();
-				isImage();
+				msc.sendFile(messageFile);
+				//isImage();
 			}
 		}
 	}

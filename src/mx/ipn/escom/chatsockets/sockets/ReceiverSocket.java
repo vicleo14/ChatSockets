@@ -141,6 +141,10 @@ public class ReceiverSocket extends MulticastS implements Runnable{
 					client.getJlUsers().setModel(um);
 					
 				}
+				else
+				{
+					this.receiveFile(client.getUser()+"/");
+				}
 			}
 
 		}

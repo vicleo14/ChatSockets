@@ -93,7 +93,9 @@ public class Server {
 				}
 				else
 				{
-					System.out.println("No es integer");
+					mss.sendObject(receivedObject);
+					//mcrs.receiveFile("files_server/");
+					//System.out.println("No es integer");
 				}
 			}
 		}
@@ -114,8 +116,7 @@ public class Server {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println("Servidor en ejecuci�n...");
-		@SuppressWarnings("unused")
+		System.out.println("Servidor en ejecucion...");
 		Server server=new Server();
 	}
 }
