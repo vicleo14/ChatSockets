@@ -53,6 +53,7 @@ public class ReceiverSocket extends MulticastS implements Runnable{
 				if(obj instanceof Message)
 				{
 					Message m=(Message)obj;
+					System.out.println("Mensaje de servidor:"+m.getText());
 					if(m.getReceiver().compareTo(client.getUser())==0 )
 					{
 						System.out.println("Mensaje para este usuario");

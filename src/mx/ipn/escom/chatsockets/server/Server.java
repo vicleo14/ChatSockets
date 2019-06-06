@@ -10,6 +10,7 @@ import mx.ipn.escom.chatsockets.entity.Message;
 import mx.ipn.escom.chatsockets.entity.User;
 import mx.ipn.escom.chatsockets.sockets.GenericSocket;
 import mx.ipn.escom.chatsockets.sockets.MulticastS;
+import mx.ipn.escom.util.Emoji;
 
 public class Server {
 	private GenericSocket mcrs;
@@ -20,6 +21,7 @@ public class Server {
 	private SimpleDateFormat sdf=new SimpleDateFormat("yyMMdd");
 	private SimpleDateFormat sdf2=new SimpleDateFormat("yyMMddHHmmss");
 	private Hashtable<User,Date> users;
+	private Emoji emojiV;
 
 	public Server() 
 	{
@@ -30,6 +32,7 @@ public class Server {
 		//Para enviar
 		mss=new MulticastS("228.1.1.1",9999,true, 128);
 		System.out.println("Comienza a recibir");
+		emojiV=new Emoji();
 		beginListening();
 		
 		
@@ -49,6 +52,7 @@ public class Server {
 					if (opc.equals(TcpRequestName.GROUP_MESSAGE)) 
 					{
 						message = (Message)mcrs.receiveObject();
+						message.setText(emojiV.setEmojis(message.getText()));
 						message.setReceiver("PUBLIC");
 						mss.sendObject(message);
 												
@@ -67,6 +71,7 @@ public class Server {
 					{
 						System.out.println("Llega mensaje privado");
 						message = (Message)mcrs.receiveObject();
+						message.setText(emojiV.setEmojis(message.getText()));
 						mss.sendObject(message);
 												
 						if(message.getFile()) {
